@@ -39,16 +39,13 @@ func (c *DbConfigObject) ConfigObjectEnum() int {
 type ConfigObjectFactory struct {}
 
 func (c *ConfigObjectFactory) NewConfigObject(conf_object_type string) (IConfigObject, error) {
-    var conf_object IConfigObject
-
     switch conf_object_type {
     case "db_config_object":
-        conf_object = &DbConfigObject{}
+        var conf_object DbConfigObject
+        err := envconfig.Process("app_db",&conf_object)
+
+        return &conf_object, err
     default:
         return nil, errors.New(fmt.Sprintf("Unknown config object type %s", conf_object_type))
     }
-
-    err := envconfig.Process("", conf_object)
-
-    return conf_object, err
 }

@@ -61,6 +61,8 @@ func loadAppConfig(path, name, conf_type string) {
         viper.SetConfigType(conf_type)
     }
 
+    viper.AutomaticEnv()
+
     if err := viper.ReadInConfig(); err == nil {
         fmt.Println("Using configuration file: ", viper.ConfigFileUsed())
     } else {
