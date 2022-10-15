@@ -7,11 +7,13 @@ import (
     common_utils "github.com/DaCatBeam/apex_api_projects/common"
 )
 
+// STRATEGY PATTERN INTERFACE
 type configStrategy interface {
     configure(string) error
     getStrategy() string
 }
 
+// STRATEGY PATTERN CONCRETE STRUCT
 struct EnvFileConfigStrategy struct {
     isLoaded bool
 }
