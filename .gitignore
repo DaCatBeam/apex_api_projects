@@ -1,4 +1,5 @@
 go.sum
-dev_docs
+.dev_docs
 .envrc
 envinit.sh
+app.env
