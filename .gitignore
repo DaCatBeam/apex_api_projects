@@ -3,3 +3,4 @@ go.sum
 .envrc
 envinit.sh
 app.env
+config/envs

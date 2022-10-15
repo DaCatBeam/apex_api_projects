@@ -45,11 +45,21 @@ func Execute() {
 
 // Checks for initial app.env configuration file. If found it loads it into viper.
 func InitConfig() {
-    viper.AddConfigPath(".")
-    viper.SetConfigName("app")
-    viper.SetConfigType("env")
-
     viper.AutomaticEnv()
+    loadAppConfig(".", "app", "env")
+    // loadAppConfig("./config/", "app", "env")
+}
+
+func loadAppConfig(path, name, conf_type string) {
+    if path != "" {
+        viper.AddConfigPath(path)
+    }
+    if name != "" {
+        viper.SetConfigName(name)
+    }
+    if conf_type != "" {
+        viper.SetConfigType(conf_type)
+    }
 
     if err := viper.ReadInConfig(); err == nil {
         fmt.Println("Using configuration file: ", viper.ConfigFileUsed())

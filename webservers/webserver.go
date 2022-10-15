@@ -2,15 +2,19 @@ package webservers
 
 // COMPOSITION PATTERN?
 type WebServerContext struct {
-    configStrategy configStrategy
+    ConfigObjectFactory ConfigObjectFactory
+    databaseStrategy databaseStrategy
 }
 
 // Initialzes a new WebServerContext
 func NewWebServerContext() *WebServerContext {
-    return &WebServerContext{}
+    wsc := &WebServerContext{}
+    wsc.ConfigObjectFactory = ConfigObjectFactory{}
+
+    return wsc
 }
 
 // Sets the configuration strategy member
-func (context *WebServerContext) SetConfigStrategy(configStrategy configStrategy) {
-    context.configStrategy = configStrategy
+func (context *WebServerContext) SetDatabaseStrategy(strat databaseStrategy) {
+    context.databaseStrategy = strat
 }

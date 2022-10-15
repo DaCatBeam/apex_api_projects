@@ -1,43 +1,54 @@
 package webservers
 
 import (
-    "os"
-    "log"
+    "fmt"
+    "errors"
 
-    common_utils "github.com/DaCatBeam/apex_api_projects/common"
+    "github.com/kelseyhightower/envconfig"
 )
 
-// STRATEGY PATTERN INTERFACE
-type configStrategy interface {
-    configure(string) error
-    getStrategy() string
+// type ConfigObjectEnum int
+
+const (
+    // db_config_object_enum ConfigObjectEnum = iota
+    db_config_object_enum int = 0
+)
+
+type IConfigObjectFactory interface {
+    NewConfigObject(string) (IConfigObject, error)
 }
 
-// STRATEGY PATTERN CONCRETE STRUCT
-struct EnvFileConfigStrategy struct {
-    isLoaded bool
+type IConfigObject interface {
+    ConfigObjectEnum() int
 }
 
-func (strat *EnvFileConfigStrategy) getStrategy() string {
-    return "EnvFileConfigStrategy"
+type DbConfigObject struct {
+    Host     string `envconfig:"AAP_DB_HOST" required:"true"` 
+    Port     string `envconfig:"AAP_DB_PORT" required:"true"`
+    Username string `envconfig:"AAP_DB_USERNAME" required:"true"`
+    Password string `envconfig:"AAP_DB_PASSWORD" required:"true"`
+    Protocol string `envconfig:"AAP_DB_PROTOCOL" required:"true"`
+    Name     string `envconfig:"AAP_DB_NAME" required:"true"`
+    Vendor   string `envconfig:"AAP_DB_VENDOR" default:""`
 }
 
-func (strat *EnvFileConfigStrategy) configure(env string) error {
-    env_file_path := os.Getenv(env)
+func (c *DbConfigObject) ConfigObjectEnum() int {
+    return db_config_object_enum
+}
 
-    if env_file_path == "" {
-        envFilePath = ".env"
+type ConfigObjectFactory struct {}
+
+func (c *ConfigObjectFactory) NewConfigObject(conf_object_type string) (IConfigObject, error) {
+    var conf_object IConfigObject
+
+    switch conf_object_type {
+    case "db_config_object":
+        conf_object = &DbConfigObject{}
+    default:
+        return nil, errors.New(fmt.Sprintf("Unknown config object type %s", conf_object_type))
     }
 
-    env_file := common_utils.NewEnvironmentFile(env_file_path)
+    err := envconfig.Process("", conf_object)
 
-    if err := env_file.Load(); err != nil {
-        strat.isLoaded = false
-        return err
-    }
-
-    strat.isLoaded = true
-
-    return nil
+    return conf_object, err
 }
-
