@@ -16,8 +16,8 @@ var webserversCmd = &cobra.Command{
     Long:  "Act on a webserver",
     Run: func(cmd *cobra.Command, args []string) {
         webserver_context := webservers.NewWebServerContext()
-        loadAppConfig("./config/envs/", "db_config_object", "env")
-        cfg_obj, err := webserver_context.ConfigObjectFactory.NewConfigObject("db_config_object")
+
+        cfg_obj, err := webserver_context.ConfigObjectFactory.NewConfigObject("mongodb")
 
         fmt.Println(fmt.Sprintf("cfg_obj:\n %+v\n\n\n\n%+v", cfg_obj, err))
     },

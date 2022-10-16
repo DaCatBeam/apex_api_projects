@@ -2,6 +2,7 @@ package webservers
 
 // COMPOSITION PATTERN?
 type WebServerContext struct {
+    // Factory concerned with creating Config objects from files
     ConfigObjectFactory ConfigObjectFactory
     databaseStrategy databaseStrategy
 }

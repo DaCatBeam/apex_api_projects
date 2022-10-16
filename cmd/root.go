@@ -5,6 +5,8 @@ import (
     "strings"
     "os"
 
+    "github.com/DaCatBeam/apex_api_projects/webservers"
+
     flag "github.com/spf13/pflag"
     "github.com/spf13/cobra"
     "github.com/spf13/viper"
@@ -46,28 +48,8 @@ func Execute() {
 // Checks for initial app.env configuration file. If found it loads it into viper.
 func InitConfig() {
     viper.AutomaticEnv()
-    loadAppConfig(".", "app", "env")
-    // loadAppConfig("./config/", "app", "env")
-}
 
-func loadAppConfig(path, name, conf_type string) {
-    if path != "" {
-        viper.AddConfigPath(path)
-    }
-    if name != "" {
-        viper.SetConfigName(name)
-    }
-    if conf_type != "" {
-        viper.SetConfigType(conf_type)
-    }
-
-    viper.AutomaticEnv()
-
-    if err := viper.ReadInConfig(); err == nil {
-        fmt.Println("Using configuration file: ", viper.ConfigFileUsed())
-    } else {
-        fmt.Println("App Init Config File: ", viper.ConfigFileUsed(), ", was not found.")
-    }
+    webservers.LoadAppConfig(".", "app", "env")
 }
 
 // Initialize Global Flag Values and bind to environment variables with viper.
