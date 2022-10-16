@@ -21,12 +21,12 @@ func (db *MongoDbStrategy) configureDatabase(config_object DbConfigObject) error
     return nil
 }
 
-func getConnectionString(config_object DbConfigObject, use_inline_creds bool) string {
+func getConnectionString(config_object DbConfigObject) string {
     var conn_uri_segments []string
 
     conn_uri_segments = append(conn_uri_segments, config_object.Protocol, "://")
 
-    if use_inline_creds {
+    if config_object.AuthMechanism == "User" {
         conn_uri_segments = append(conn_uri_segments, config_object.Username, ":", config_object.Password, "@")
     }
 
